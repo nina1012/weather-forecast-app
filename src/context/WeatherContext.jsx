@@ -56,6 +56,8 @@ export const WeatherProvider = ({ children }) => {
     isSearching,
     setId,
     setIsSearching,
+    setIsFahrenheit,
+    fetchedData,
   };
 
   return <WeatherContext.Provider value={providedValues}>{children}</WeatherContext.Provider>;

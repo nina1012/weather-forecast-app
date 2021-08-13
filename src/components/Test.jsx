@@ -3,8 +3,16 @@ import { WeatherContext, WeatherProvider } from '../context/WeatherContext';
 import { debounce } from '../utils/debounce';
 
 const Test = () => {
-  const { setIsPreciseLocation, setQuery, query, data, setIsSearching, isSearching, setId } =
-    useContext(WeatherContext);
+  const {
+    setIsPreciseLocation,
+    setQuery,
+    query,
+    data,
+    setIsSearching,
+    isSearching,
+    setId,
+    setIsFahrenheit,
+  } = useContext(WeatherContext);
   const setInput = (e) => {
     setIsSearching(true);
     setQuery(e.target.value);
@@ -22,25 +30,25 @@ const Test = () => {
     <div>
       <button
         onClick={() => {
-          console.log('precise');
-          setIsPreciseLocation(true);
+          console.log('f');
+          setIsFahrenheit(true);
         }}
       >
-        precise
+        F
       </button>
       <button
         onClick={() => {
-          console.log('non');
-          setIsPreciseLocation(false);
+          console.log('c');
+          setIsFahrenheit(false);
         }}
       >
-        non precise
+        C
       </button>
       <input type="text" onChange={debouncedFunc} />
       <ul>
         {Array.isArray(data) &&
           data.map((item) => (
-            <li onClick={() => searchForCityWeather(item.woeid)} key={item.title}>
+            <li className="" onClick={() => searchForCityWeather(item.woeid)} key={item.title}>
               {item.title}
             </li>
           ))}
