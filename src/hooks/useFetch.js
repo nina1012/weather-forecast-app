@@ -14,6 +14,7 @@ const useFetch = (url) => {
           const response = await fetch(url);
           const data = await response.json();
           setData(data);
+
           //   if (Array.isArray(data)) {
           //     setLocationsFound(data);
           //   } else if (typeof data === 'object' && data !== null && !Array.isArray(data)) {

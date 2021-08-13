@@ -8,6 +8,7 @@ export const WeatherProvider = ({ children }) => {
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(true);
   const [id, setId] = useState(null);
+  const [isFahrenheit, setIsFahrenheit] = useState(true);
 
   const CORS = 'https://api.allorigins.win/raw?url=';
   const WEATHER_API = 'https://www.metaweather.com/api/location/';
@@ -17,7 +18,7 @@ export const WeatherProvider = ({ children }) => {
     `${URL}${isSearching ? `search/?query=${query || 'london'}` : id}`
   );
 
-  console.log(fetchedData().data);
+  const { data } = fetchedData();
 
   const getPreciseLocation = async () => {
     function success(pos) {
@@ -50,6 +51,11 @@ export const WeatherProvider = ({ children }) => {
   const providedValues = {
     setIsPreciseLocation,
     setQuery,
+    query,
+    data,
+    isSearching,
+    setId,
+    setIsSearching,
   };
 
   return <WeatherContext.Provider value={providedValues}>{children}</WeatherContext.Provider>;

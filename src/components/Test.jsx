@@ -3,12 +3,20 @@ import { WeatherContext, WeatherProvider } from '../context/WeatherContext';
 import { debounce } from '../utils/debounce';
 
 const Test = () => {
-  const { setIsPreciseLocation, setQuery } = useContext(WeatherContext);
+  const { setIsPreciseLocation, setQuery, query, data, setIsSearching, isSearching, setId } =
+    useContext(WeatherContext);
   const setInput = (e) => {
+    setIsSearching(true);
     setQuery(e.target.value);
   };
+  console.log(data);
   // useCallback makes sure that the same instance of debounced callback(debounde) is called between rerenderings
-  const debouncedFunc = useCallback(debounce(setInput, 500), []);
+  const debouncedFunc = useCallback(debounce(setInput), []);
+
+  const searchForCityWeather = (id) => {
+    setIsSearching(false);
+    setId(id);
+  };
 
   return (
     <div>
@@ -29,7 +37,14 @@ const Test = () => {
         non precise
       </button>
       <input type="text" onChange={debouncedFunc} />
-      <button></button>
+      <ul>
+        {Array.isArray(data) &&
+          data.map((item) => (
+            <li onClick={() => searchForCityWeather(item.woeid)} key={item.title}>
+              {item.title}
+            </li>
+          ))}
+      </ul>
     </div>
   );
 };
