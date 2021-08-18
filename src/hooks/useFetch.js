@@ -4,7 +4,9 @@ const useFetch = (url) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [location, setLocation] = useState(null);
+  const [locationsArray, setLocationsArray] = useState(null);
+  console.log(url);
   useEffect(() => {
     async function fetching() {
       try {
@@ -13,15 +15,15 @@ const useFetch = (url) => {
           setIsLoading(true);
           const response = await fetch(url);
           const data = await response.json();
+          // setData(data);
+          if (Array.isArray(data)) {
+            setLocationsArray(data);
+          } else if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
+            setLocation(data);
+          }
           setData(data);
-
-          //   if (Array.isArray(data)) {
-          //     setLocationsFound(data);
-          //   } else if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
-          //     setLocation(data);
-          //   }
           setIsLoading(false);
-          return { setData, setIsLoading };
+          return { setData, setLocationsArray, setIsLoading };
         } else {
           reset();
           throw new TypeError('Invalid input value');
@@ -40,7 +42,7 @@ const useFetch = (url) => {
   };
 
   const fetchedData = () => {
-    return { data, isLoading, error };
+    return { data, isLoading, error, location, locationsArray };
   };
 
   return { fetchedData, reset };

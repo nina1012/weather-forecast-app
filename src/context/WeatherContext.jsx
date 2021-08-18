@@ -18,7 +18,7 @@ export const WeatherProvider = ({ children }) => {
     `${URL}${isSearching ? `search/?query=${query || 'london'}` : id}`
   );
 
-  const { data } = fetchedData();
+  const { data, location, locationsArray } = fetchedData();
 
   const getPreciseLocation = async () => {
     function success(pos) {
@@ -48,6 +48,23 @@ export const WeatherProvider = ({ children }) => {
 
   isPreciseLocation && getPreciseLocation();
 
+  // based on selected unit for temerature, change all temperature for all days
+  const allTemperatures = location?.consolidated_weather.map((day) => {
+    if (isFahrenheit) {
+      const min = (day.min_temp * 9) / 5 + 32;
+      const max = (day.max_temp * 9) / 5 + 32;
+      const temp = (day.the_temp * 9) / 5 + 32;
+
+      return {
+        ...day,
+        min_temp: min,
+        max_temp: max,
+        the_temp: temp,
+      };
+    }
+    return day;
+  });
+
   const providedValues = {
     setIsPreciseLocation,
     setQuery,
@@ -58,6 +75,7 @@ export const WeatherProvider = ({ children }) => {
     setIsSearching,
     setIsFahrenheit,
     fetchedData,
+    allTemperatures,
   };
 
   return <WeatherContext.Provider value={providedValues}>{children}</WeatherContext.Provider>;

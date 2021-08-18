@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn-gray {
+    @apply bg-buttonGray p-2 text-buttonGrayText inline-block;
+  }
+  .input {
+    @apply bg-primaryLight text-buttonGrayText border border-white;
+  }
+
+  .temperature-btn {
+    @apply text-lg font-bold bg-lightGray text-primaryLight rounded-full w-10 h-10  centering p-2;
+  }
+  .invert {
+    @apply bg-temperatureDarkBtn text-white;
+  }
+  .fixed-position {
+    @apply fixed top-0 left-0 right-0 bottom-0 overflow-y-scroll;
+  }
+}
+
+@layer utilities {
+  .centering {
+    @apply flex justify-center items-center;
+  }
+}
