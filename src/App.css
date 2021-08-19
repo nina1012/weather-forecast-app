@@ -12,10 +12,10 @@
 .range::before,
 .range::after {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  font-size: 2rem;
   transform: translateX(-50%);
   font-size: 0.7rem;
+  transform: translateX(0%);
 }
 .range::before {
   content: '0%';
@@ -26,6 +26,16 @@
   content: '100%';
   top: -1.5rem;
   right: 0;
+}
+
+.indicator {
+  position: relative;
+  height: 0;
+}
+.indicator::after {
+  content: '50%';
+  top: 1.5rem;
+  font-size: 11.2px;
 }
 
 @media only screen and (min-width: 1024px) {

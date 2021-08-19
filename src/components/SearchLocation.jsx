@@ -9,8 +9,6 @@ const SearchLocation = ({ setShowForm }) => {
   const { fetchedData, setQuery, setIsSearching } = useContext(WeatherContext);
   const { isLoading, locationsArray, data, location } = fetchedData();
 
-  console.log(location, data);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSearching((prevState) => !prevState);
@@ -19,13 +17,12 @@ const SearchLocation = ({ setShowForm }) => {
   const setInput = (e) => {
     setIsSearching(true);
     setQuery(e.target.value);
-    console.log(data);
   };
   // useCallback makes sure that the same instance of debounced callback(debounde) is called between rerenderings
   const debouncedFunc = useCallback(debounce(setInput), []);
 
   return (
-    <div className="bg-primaryLight h-screen w-full fixed-position py-6 px-5 lg:w-aside-width">
+    <div className="bg-primaryLight h-screen w-full fixed-position z-50 py-6 px-5 lg:w-aside-width">
       <div onClick={() => setShowForm(false)}>
         <MdClose size={26} className="ml-auto" />
       </div>
@@ -44,12 +41,19 @@ const SearchLocation = ({ setShowForm }) => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <ul className="searched-locations mt-6">
-          {locationsArray
-            ? locationsArray.map((location) => (
-                <LocationItem location={location} key={location.woeid} key={location.title} />
-              ))
-            : null}
+        <ul className="searched-locations mt-6 ">
+          {locationsArray ? (
+            locationsArray.map((location) => (
+              <LocationItem
+                location={location}
+                key={location.woeid}
+                key={location.title}
+                setShowForm={setShowForm}
+              />
+            ))
+          ) : (
+            <h3>No city found</h3>
+          )}
         </ul>
       )}
     </div>

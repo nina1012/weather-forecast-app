@@ -4,12 +4,25 @@ import SearchLocation from './SearchLocation';
 import { BiCurrentLocation } from 'react-icons/bi';
 import { MdLocationOn } from 'react-icons/md';
 import Spinner from './Spinner';
+import { formatDate, formatValue } from '../utils/formatting';
 
 const TodayPreview = ({ showForm, setShowForm }) => {
-  const { fetchedData } = useContext(WeatherContext);
+  const { fetchedData, isFahrenheit, setPreciseLocation, isPreciseLocation } =
+    useContext(WeatherContext);
 
   const { isLoading, data } = fetchedData();
-  console.log(data);
+
+  let today;
+  if (data.consolidated_weather) {
+    today = data.consolidated_weather[0];
+  }
+
+  const {
+    the_temp: temp,
+    weather_state_name: state,
+    applicable_date: date,
+    weather_state_abbr: img_name,
+  } = today || {};
   return (
     <aside
       style={{
@@ -28,11 +41,9 @@ const TodayPreview = ({ showForm, setShowForm }) => {
             <button
               className="btn-gray rounded-full"
               style={{
-                backgroundColor: true ? 'hsl(234,32%,35%)' : '#6E707A',
+                backgroundColor: isPreciseLocation ? 'hsl(234,32%,35%)' : '#6E707A',
               }}
-              // onClick={() =>
-              //   setPreciseLocation(prevState => (prevState = !prevState))
-              // }
+              onClick={() => setPreciseLocation((prevState) => (prevState = !prevState))}
             >
               <BiCurrentLocation size={28} />
             </button>
@@ -43,24 +54,26 @@ const TodayPreview = ({ showForm, setShowForm }) => {
             <div className="today-stats grid gap-8 mt-20 text-grayLight md:mt-32">
               <div className="centering">
                 <img
-                  src={`./src/assets/${'c'}.png`}
+                  src={`./src/assets/${img_name || 'c'}.png`}
                   alt="weather icon"
                   className="w-icon-width-small md:w-icon-width-large"
                 />
               </div>
               <h1 className="text-9xl text-white mt-12 font-medium">
-                {Math.floor(12.43545)}
-                <span className="text-5xl text-grayLight font-light ">&deg;C</span>
+                {formatValue(isFahrenheit ? (temp * 9) / 5 + 32 : temp)}
+                <span className="text-5xl text-grayLight font-light ">
+                  &deg;{isFahrenheit ? 'F' : 'C'}
+                </span>
               </h1>
-              <h2 className="font-semibold text-4xl leading-10 ">{'shower'}</h2>
+              <h2 className="font-semibold text-4xl leading-10 ">{state}</h2>
               <div className="centering text-lg">
                 <span>Today</span>
                 <span className="mx-4">&middot;</span>
-                <span>{14.7}</span>
+                <span>{formatDate(date)}</span>
               </div>
               <div className="centering">
                 <MdLocationOn size={20} />
-                <span className="ml-2 text-lg">{'London'}</span>
+                <span className="ml-2 text-lg">{data.title}</span>
               </div>
             </div>
           )}

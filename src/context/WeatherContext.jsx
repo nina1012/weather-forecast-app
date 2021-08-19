@@ -8,7 +8,7 @@ export const WeatherProvider = ({ children }) => {
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(true);
   const [id, setId] = useState(null);
-  const [isFahrenheit, setIsFahrenheit] = useState(true);
+  const [isFahrenheit, setIsFahrenheit] = useState(false);
 
   const CORS = 'https://api.allorigins.win/raw?url=';
   const WEATHER_API = 'https://www.metaweather.com/api/location/';
@@ -17,6 +17,8 @@ export const WeatherProvider = ({ children }) => {
   const { fetchedData } = useFetch(
     `${URL}${isSearching ? `search/?query=${query || 'london'}` : id}`
   );
+
+  const [weather, setWeather] = useState(null);
 
   const { data, location, locationsArray } = fetchedData();
 
@@ -48,24 +50,8 @@ export const WeatherProvider = ({ children }) => {
 
   isPreciseLocation && getPreciseLocation();
 
-  // based on selected unit for temerature, change all temperature for all days
-  const allTemperatures = location?.consolidated_weather.map((day) => {
-    if (isFahrenheit) {
-      const min = (day.min_temp * 9) / 5 + 32;
-      const max = (day.max_temp * 9) / 5 + 32;
-      const temp = (day.the_temp * 9) / 5 + 32;
-
-      return {
-        ...day,
-        min_temp: min,
-        max_temp: max,
-        the_temp: temp,
-      };
-    }
-    return day;
-  });
-
   const providedValues = {
+    isPreciseLocation,
     setIsPreciseLocation,
     setQuery,
     query,
@@ -75,7 +61,9 @@ export const WeatherProvider = ({ children }) => {
     setIsSearching,
     setIsFahrenheit,
     fetchedData,
-    allTemperatures,
+    location,
+    locationsArray,
+    isFahrenheit,
   };
 
   return <WeatherContext.Provider value={providedValues}>{children}</WeatherContext.Provider>;

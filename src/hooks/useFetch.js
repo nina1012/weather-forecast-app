@@ -6,7 +6,7 @@ const useFetch = (url) => {
   const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState(null);
   const [locationsArray, setLocationsArray] = useState(null);
-  console.log(url);
+
   useEffect(() => {
     async function fetching() {
       try {
