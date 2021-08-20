@@ -2,13 +2,8 @@ import React, { useContext } from 'react';
 import { WeatherContext } from '../context/WeatherContext';
 import { formatDate, formatValue } from '../utils/formatting';
 
-const DayCard = (props) => {
-  const {
-    applicable_date: date,
-    weather_state_abbr: abbr,
-    max_temp: max,
-    min_temp: min,
-  } = props.day;
+const DayCard = ({ day }) => {
+  const { applicable_date: date, weather_state_abbr: abbr, max_temp: max, min_temp: min } = day;
 
   const { isFahrenheit } = useContext(WeatherContext);
   return (

@@ -9,16 +9,21 @@ import { ImCompass } from 'react-icons/im';
 import DayCard from './DayCard';
 
 const MainContent = () => {
-  const [showForm, setShowForm] = useState(true);
+  const [showForm, setShowForm] = useState(false);
   const [size] = useMediaQuery();
   const { location, fetchedData, setIsFahrenheit, isFahrenheit } = useContext(WeatherContext);
   const { isLoading, data } = fetchedData();
 
+  // at each change of location, weather item inside localStorage should be changed and store new location as weather
+  useEffect(() => {
+    window.localStorage.setItem('weather', JSON.stringify(location));
+  }, [location]);
+
+  // extracting weather for today and other days from either data or location (default if data is not known and localStorage is empty)
   let today;
   let otherDays;
-  if (data.consolidated_weather) {
-    today = data.consolidated_weather[0];
-    otherDays = data.consolidated_weather.slice(1);
+  if (data.consolidated_weather || location.consolidated_weather) {
+    [today, ...otherDays] = location.consolidated_weather;
   }
 
   const {
@@ -27,7 +32,7 @@ const MainContent = () => {
     visibility,
     humidity,
     air_pressure,
-  } = today || {};
+  } = today || location.consolidated_weather[0];
 
   return (
     <div className="lg:grid lg:grid-cols-1/3 bg-primaryDark">
@@ -70,7 +75,7 @@ const MainContent = () => {
                       </p>
                       <div className="centering">
                         <span
-                          className="material-icons md-24 p-1 bg-gray-500 rounded-full overflow-hidden mx-2"
+                          className="material-icons centering md-24 p-1 bg-gray-500 rounded-full overflow-hidden mx-2"
                           style={{
                             transform: `rotate(${rotateIcon(direction)})`,
                           }}
@@ -82,13 +87,13 @@ const MainContent = () => {
                     </div>
                     <div className="bg-primaryLight w-highlightCardWidth  md:w-highlightCardWidth pt-4 pb-8">
                       <h3 className="font-medium text-lightGray">Humidity</h3>
-                      <p className="my-4">
+                      <p className="my-4 mb-6">
                         <span className="text-6xl font-semibold">{humidity}</span>{' '}
                         <span className="text-3xl">%</span>
                       </p>
                       <div className="range relatives bg-gray-300 mx-auto w-3/4 rounded">
                         <div
-                          className=" bg-yellow-300 "
+                          className=" bg-yellow-300"
                           style={{
                             width: `${humidity}%`,
                             height: '5px',

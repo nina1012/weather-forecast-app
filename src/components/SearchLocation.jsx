@@ -26,15 +26,16 @@ const SearchLocation = ({ setShowForm }) => {
       <div onClick={() => setShowForm(false)}>
         <MdClose size={26} className="ml-auto" />
       </div>
-      <form className="flex justify-between align-center py-4" onSubmit={(e) => handleSubmit(e)}>
+      <form className="flex justify-between align-center py-4" onSubmit={handleSubmit}>
         <input
+          autoFocus
           type="text"
           className="px-4 input w-10/12 mr-3"
           placeholder="&#61442;   search location"
           style={{ fontFamily: 'Raleway, FontAwesome' }}
           onChange={debouncedFunc}
         />
-        <button className="btn-gray bg-buttonBlue p-3" onClick={(e) => handleSubmit(e)}>
+        <button className="btn-gray bg-buttonBlue p-3" onClick={handleSubmit}>
           Search
         </button>
       </form>
@@ -42,7 +43,7 @@ const SearchLocation = ({ setShowForm }) => {
         <Spinner />
       ) : (
         <ul className="searched-locations mt-6 ">
-          {locationsArray ? (
+          {locationsArray && locationsArray.length > 1 ? (
             locationsArray.map((location) => (
               <LocationItem
                 location={location}

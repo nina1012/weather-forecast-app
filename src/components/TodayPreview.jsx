@@ -7,10 +7,10 @@ import Spinner from './Spinner';
 import { formatDate, formatValue } from '../utils/formatting';
 
 const TodayPreview = ({ showForm, setShowForm }) => {
-  const { fetchedData, isFahrenheit, setPreciseLocation, isPreciseLocation } =
+  const { fetchedData, isFahrenheit, setIsPreciseLocation, isPreciseLocation } =
     useContext(WeatherContext);
 
-  const { isLoading, data } = fetchedData();
+  const { isLoading, data, location } = fetchedData();
 
   let today;
   if (data.consolidated_weather) {
@@ -22,7 +22,8 @@ const TodayPreview = ({ showForm, setShowForm }) => {
     weather_state_name: state,
     applicable_date: date,
     weather_state_abbr: img_name,
-  } = today || {};
+  } = today || location.consolidated_weather[0];
+
   return (
     <aside
       style={{
@@ -43,7 +44,7 @@ const TodayPreview = ({ showForm, setShowForm }) => {
               style={{
                 backgroundColor: isPreciseLocation ? 'hsl(234,32%,35%)' : '#6E707A',
               }}
-              onClick={() => setPreciseLocation((prevState) => (prevState = !prevState))}
+              onClick={() => setIsPreciseLocation((prevState) => (prevState = !prevState))}
             >
               <BiCurrentLocation size={28} />
             </button>
@@ -73,7 +74,7 @@ const TodayPreview = ({ showForm, setShowForm }) => {
               </div>
               <div className="centering">
                 <MdLocationOn size={20} />
-                <span className="ml-2 text-lg">{data.title}</span>
+                <span className="ml-2 text-lg">{data.title || location.title}</span>
               </div>
             </div>
           )}
