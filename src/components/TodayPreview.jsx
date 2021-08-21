@@ -27,7 +27,7 @@ const TodayPreview = ({ showForm, setShowForm }) => {
   return (
     <aside
       style={{
-        backgroundImage: !showForm && "url('./src/assets/Cloud-background.png')",
+        backgroundImage: !showForm && "url('./public/assets/Cloud-background.png')",
       }}
       className="py-6 px-5 h-full min-h-screen bg-primaryLight text-white bg-no-repeat bg-top-30 bg-blend-overlay"
     >
@@ -55,7 +55,7 @@ const TodayPreview = ({ showForm, setShowForm }) => {
             <div className="today-stats grid gap-8 mt-20 text-grayLight md:mt-32">
               <div className="centering">
                 <img
-                  src={`./src/assets/${img_name || 'c'}.png`}
+                  src={`./public/assets/${img_name || 'c'}.png`}
                   alt="weather icon"
                   className="w-icon-width-small md:w-icon-width-large"
                 />

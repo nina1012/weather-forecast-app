@@ -10,7 +10,7 @@ const DayCard = ({ day }) => {
     <div className="bg-primaryLight w-dayCardWidth h-dayCardHeight border-white flex flex-col justify-evenly">
       <p>{formatDate(date)}</p>
       <img
-        src={`./src/assets/${abbr}.png`}
+        src={`./public/assets/${abbr}.png`}
         className="centering w-dayCardImgWidth h-dayCardImgHeight mx-auto object-contain"
       />
       <div className="flex justify-evenly">
