@@ -169,7 +169,7 @@ const useFetch = (url) => {
         // if url is undefined, reset all the data and url to userLocationInfo and throw an error
         if (url) {
           setIsLoading(true);
-          const response = await fetch(url);
+          const response = await fetch(url, { mode: 'cors' });
           const data = await response.json();
           // setData(data);
           if (Array.isArray(data)) {
